@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NER Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            display: flex;           /* Flexbox to center everything */
+            flex-direction: column;
+            align-items: center;     /* Horizontal Center */
+            justify-content: center; /* Vertical Center */
+            min-height: 100vh;       /* Full viewport height */
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;      /* Center text inside main box */
+            width: 90%;
+            max-width: 800px;
+        }
+
+        h2 { margin-bottom: 20px; color: #333; }
+
+        form {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        input[type="text"] {
+            width: 60%;
+            padding: 12px;
+            border: 2px solid #e1e4e8;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus { border-color: #007bff; }
+
+        button {
+            padding: 12px 25px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover { background: #0056b3; }
+
+        /* --- NEW RESULT CARDS --- */
+        .results-grid {
+            display: flex;
+            flex-wrap: wrap;       /* Allow wrapping to next line */
+            justify-content: center;
+            gap: 15px;             /* Space between boxes */
+            margin-top: 20px;
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column; /* Stack items vertically */
+            align-items: center;
+            justify-content: center;
+            padding: 15px 20px;
+            border-radius: 10px;    /* Your requested 10px radius */
+            min-width: 80px;
+            border: 1px solid rgba(0,0,0,0.05);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+
+        .card:hover { transform: translateY(-3px); }
+
+        /* Typography inside the card */
+        .word-text { font-size: 1.1em; font-weight: bold; margin-bottom: 5px; }
+        .label-text { font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; opacity: 0.9; }
+        .conf-text { font-size: 0.75em; opacity: 0.7; }
+
+        /* --- COLORS --- */
+        .tag-O { background: #f8f9fa; color: #6c757d; border: 1px solid #dee2e6; } /* Standard grey for 'Other' */
+        .tag-COLOR { background: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+        .tag-LOCATION { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        .tag-PRODUCT { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .tag-DATE { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>🏷️ NER Entity Extractor</h2>
+
+        <form method="POST">
+            <input type="text" name="sentence" placeholder="Try: buy red shoes in dubai..." required>
+            <button type="submit">Analyze</button>
+        </form>
+
+        {% if results %}
+        <div class="results-grid">
+            {% for item in results %}
+            <div class="card tag-{{ item.tag }}">
+                <span class="word-text">{{ item.word }}</span>
+
+                <span class="label-text">{{ item.tag }}</span>
+
+                <span class="conf-text">{{ item.conf }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+    </div>
+
+</body>
+</html>
