@@ -10,7 +10,8 @@ app = Flask(__name__)
 MAX_LENGTH = 20
 TAG_MAP = {0: "O", 1: "COLOR", 2: "PRODUCT", 3: "DATE", 4: "LOCATION"}
 
-product_db={"sneakers","shirts","shorts","boots","coat","hat","tshirt","shoes"}
+#use the db to feed the ai outlier words to ensure buisness reliablilty
+product_db={"sneakers","shirts","shorts","boots","coat","hat","tshirt","shoes","hoodies"}
 
 LOCATION_DB = {
     "london", "paris", "new york", "dubai", "tokyo", "berlin",
@@ -29,15 +30,7 @@ date_db={"today", "yesterday", "tomorrow", "tonight",
     "july", "august", "september", "october", "november", "december",
     "weekend", "morning", "evening", "night"}
 
-"""
-ANIME_DB = {
-    "jujutsu", "kaisen", "gojo", "sukuna", "itadori",
-    "naruto", "sasuke", "sakura",
-    "bleach", "ichigo",
-    "luffy", "zoro", "one piece",
-    "blue lock", "isagi", "rin", "bachira"
-}
-"""
+
 model = tf.keras.models.load_model('ner_high_accuracy.h5')
 with open('tokenizer.pickle', 'rb') as handle:
     tokenizer = pickle.load(handle)
